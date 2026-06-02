@@ -45,4 +45,3 @@ runs:
       shell: bash
       id: set
       run: echo "greeted=true" >> "$GITHUB_OUTPUT"
-
