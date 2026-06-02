@@ -1,0 +1,20 @@
+name: environment variable test
+on:
+  workflow_dispatch:
+env:
+  APP_NAME: myapp
+jobs:
+  test:
+    env:
+      ENVIRONMENT: staging
+    runs-on: ubuntu-latest
+    steps:
+      - name: accessing from same job
+        run: |
+          echo "APP_NAME :" $APP_NAME
+          echo "ENVIRONMENT :" $ENVIRONMENT
+          echo "VERSION :" $VERSION
+          echo "Commit SHA :" ${{ github.sha }}
+          echo "Actor :" ${{ github.actor }}
+        env:
+          VERSION: 1.0.0

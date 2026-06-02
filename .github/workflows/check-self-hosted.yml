@@ -1,0 +1,9 @@
+name: self-hosted check
+on:
+  workflow_dispatch:
+jobs:
+  info:
+    runs-on: [self-hosted, my-self-hosted-runner]
+    steps:
+      - name: Cat created file
+        run: cat ~/_work/github-actions-practice/github-actions-practice/hi.txt

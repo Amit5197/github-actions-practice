@@ -1,0 +1,32 @@
+name: python log analyzer 
+on: 
+  workflow_dispatch:
+    inputs:
+      logfile:
+        description: 'Log file to analyze'
+        required: true
+        default: 'app.log'
+      outputfile:
+        description: 'Output file to store result'
+        required: false
+        default: 'analysis.txt'
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.12
+
+      - name: run script
+        run: python log_analyzer_cli.py "${{ github.event.inputs.logfile }}" --out "${{ github.event.inputs.outputfile }}"
+
+      - name: upload artifact
+        uses: actions/upload-artifact@v4
+        with: 
+          name: analysis.txt
+          path: analysis.txt
