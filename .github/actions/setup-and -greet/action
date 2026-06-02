@@ -1,0 +1,48 @@
+name: setup & greet composite action
+
+inputs:
+  
+  name:
+    description: Provide your name
+    type: string
+    required: true
+
+  laguage:
+    description: Seelct language
+    type: choice
+    default: 'en'
+    options:
+      - 'en'
+      - 'chinese'
+      - 'korean'
+      - 'spanish'
+
+outputs:
+  greeted:
+    value: ${{ steps.set.outputs.greeted }}
+  
+
+runs:
+  using: 'composite'
+
+  steps:
+
+    - name:  Print a greeting in the specified language
+      shell: bash
+      run: |
+        case "${{ inputs.laguage }}" in 
+        en) echo "Hello, ${{ inputs.name }}." ;;
+        korean) echo "안녕하세요, {{ inputs.name }}." ;;
+        chinese) echo "你好, {{ inputs.name }}." ;; 
+        spanish) echo "Hola, {{ inputs.name }}." ;;
+        esac
+
+    - name: Print the current date and runner OS
+      shell: bash
+      run: echo -e "Current Date :$(date)\n Runner OS :$RUNNER_OS"
+
+    - name: Set an output called `greeted` with value `true`
+      shell: bash
+      id: set
+      run: echo "greeted=true" >> "$GITHUB_OUTPUT"
+
