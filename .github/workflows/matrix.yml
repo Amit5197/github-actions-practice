@@ -1,17 +1,27 @@
+name: matrix strategy
+
+on:
+  workflow_dispatch:
+  #push:
+  #branches: [main]
+  #paths: matrix.yml
+
 jobs:
   matrix:
-  runs-on: ${{ matrix.os }}
-  strategy:
+    
+    strategy:
+      fail-fast: true
       matrix:
         os: [ubuntu-latest, macos-latest]
-        # Always wrap version numbers in quotes to prevent YAML truncation
-        python-version: ['3.10', '3.11', '3.12'] 
-
+        python-version: ["3.9","3.10", "3.11", "3.12"]
+        exclude:
+          - os: macos-latest
+            python-version: "3.10"
+    runs-on: ${{ matrix.os }}
     steps:
-      - name: Set up job
-        uses: actions/checkout@v4
-
       - name: installing python version ${{ matrix.python-version }}
         uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
+      - name: print python version
+        run: python --version
