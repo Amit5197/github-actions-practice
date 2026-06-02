@@ -2,7 +2,7 @@ name: pull-request-check
 on:
   workflow_dispatch:
   #pull_request:
-    #branches: [main]
+    #branches: [feature]
     #types: [opened, synchronize]
 
 jobs:
