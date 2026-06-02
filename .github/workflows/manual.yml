@@ -1,0 +1,19 @@
+name: manual with environment variables
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: An environment passed from workflow
+        default: 'staging'
+        required: true
+        type: choice
+        options:
+          - 'production'
+          - 'staging'
+
+jobs:
+  manual:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Running Environment
+        run: echo "The selected environment is:" ${{ inputs.environment }}

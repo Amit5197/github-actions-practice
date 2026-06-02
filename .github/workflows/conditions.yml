@@ -1,0 +1,35 @@
+name: conditions yml
+on:
+  workflow_dispatch:
+  #push:
+  #pull_request:
+jobs:
+  check-conditions:
+    runs-on: ubuntu-latest
+    steps:
+      - if: github.ref == 'refs/heads/main'
+        id: step1
+        name: Print on only main
+        run: |
+          echo "hello"
+          #exit 1
+      - if: failure()
+        name: running if previos failed
+        run: echo "Previous step failed"
+
+  on-push:
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - name: running on push
+        run: echo "This runs on push"
+        
+  on-error:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: failing step
+        run: python ---version
+        continue-on-error: true
+      - name: running on error
+        run: echo "Running on error"

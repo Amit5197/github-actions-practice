@@ -1,0 +1,68 @@
+name: Real world PR-gate
+
+on:
+  #workflow_dispatch:
+  pull_request:
+    branches: [main]
+
+jobs:
+
+  file-size-check:
+    runs-on: ubuntu-latest
+
+    steps:
+     
+      - name: code checkout
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Check file size
+        run: |
+          Files=$(git diff --name-only origin/${{ github.base_ref }} HEAD)
+
+          for file in $Files; do
+            if [ -f "$file" ]; then
+              SIZE=$(stat -c%s "$file")
+              if [ $SIZE -gt 1048576 ]; then
+                echo "File is larger than 1 MB"
+                exit 1
+              fi
+              echo "File is within limits"
+            fi
+          done
+
+  branch-name-check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: check pattern
+        run: |
+          branch=${{ github.head_ref }}
+          pattern="^(feature|fix|docs)\/.*"
+
+          if [[ ! "$branch" =~ $pattern ]]; then
+            echo "Invalid branch"
+            exit 1
+          else
+            echo "Valid branch"
+          fi
+
+
+  pr-body-check:
+    runs-on: ubuntu-latest
+
+    steps:
+     
+      - name: Check description
+        run: |
+          des="${{ github.event.pull_request.body }}"
+          if [ -z "$des" ]; then
+            echo "WARNING: Description is empty. Please write description."
+          else
+            echo "Description: $des"
+          fi
+          
+
+
+              
