@@ -1,12 +1,22 @@
-name: self-hosted
+name: self-hosted-runner
+
 on:
   workflow_dispatch:
+
 jobs:
-  info:
-    runs-on: [self-hosted, my-self-hosted-runner]
+  self-hosted:
+    runs-on:  ec2-runner
+
     steps:
-      - name: Checking following information about self-hosted runner
-        run: |
-          echo "Hostname: $HOSTNAME"
-          echo "Working directory: $PWD"
-          echo "Hi from github" > hi.txt
+      - name: Checkout Repo
+        uses: actions/checkout@vv4
+
+      - name: Print Hostname
+        run: hostname
+
+      - name: Print Working Directory
+        run: pwd
+
+      - name: Create a File
+
+        run: echo "Welcome to self hosted runner" > self-hosted.txt
