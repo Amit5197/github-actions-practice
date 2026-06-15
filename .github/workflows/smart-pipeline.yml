@@ -19,7 +19,7 @@ jobs:
         run: pip install -r requirements.txt
 
       - name: run linter
-        run: flake8 src/
+        run: flake8 .
 
   test:
     runs-on: ubuntu-latest
