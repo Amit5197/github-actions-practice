@@ -2,4 +2,4 @@ fastapi
 uvicorn
 psutil
 boto3
-
+flake8
