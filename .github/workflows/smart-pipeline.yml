@@ -15,11 +15,12 @@ jobs:
         with:
          python-version: 3.12
 
-      - name: Install dependencies
-        run: pip install -r requirements.txt
-
-      - name: run linter
-        run: flake8 . --exit-zero
+      - name: Install dependencies and run linter
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install flake8
+          python -m flake8 log_analyzer_cli.py --exit-zero
 
   test:
     runs-on: ubuntu-latest
