@@ -7,15 +7,13 @@ jobs:
   lint-test:
     runs-on: ubuntu-latest
     steps:
-steps:
-      # 1. Replace actions/checkout@v6
-      - name: Checkout Code
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # Pin to v6 commit SHA
+      # actions/checkout@v4.2.2 pinned to a specific SHA
+      - name: checkout code
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
 
-      # 2. Replace actions/setup-python@v6
-      - name: Set up Python
-        uses: actions/setup-python@d27e3f3d7c64b4bbf8e4abfb9b62b690f7c382db # Pin to v6 commit SHA
-        
+      # actions/setup-python@v5.4.0 pinned to a specific SHA
+      - name: setup python
+        uses: actions/setup-python@42375524e23c412d93fb67b49958b491fce71c38
         with:
           python-version: "3.12"
 
