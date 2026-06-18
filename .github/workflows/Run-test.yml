@@ -3,10 +3,6 @@ name: run script
 on:
   workflow_dispatch: 
 
-defaults:
-      run:
-        working-directory: github-actions-practice
-
 jobs:
   run-script:
     runs-on: ubuntu-latest
