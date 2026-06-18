@@ -5,7 +5,7 @@ on:
 
 defaults:
       run:
-        working-directory: 2026/day-44
+        working-directory: github-actions-practice
 
 jobs:
   run-script:
