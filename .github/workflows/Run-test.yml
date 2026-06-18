@@ -3,6 +3,10 @@ name: run script
 on:
   workflow_dispatch: 
 
+defaults:
+      run:
+        working-directory: 2026/day-44
+
 jobs:
   run-script:
     runs-on: ubuntu-latest
