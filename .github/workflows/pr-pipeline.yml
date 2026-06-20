@@ -1,38 +1,29 @@
-name: Main Branch Pipeline
+name: PR Pipeline
 
+# 1. Trigger on pull request to main
 on:
-  push:
+  pull_request:
     branches:
       - main
+    types:
+      - opened
+      - synchronize
 
 jobs:
-  # Job 1: Call the reusable build-test workflow
+  # 2. Call the reusable build-test workflow
   build-test:
-    name: Run Tests
+    name: Build & Test
     uses: ./.github/workflows/reusable-build-test.yml
     with:
       node_version: '20'
-      run_tests: true
+      run_tests: true # This flag tells your reusable workflow NOT to run Docker steps
 
-  # Job 2: Call the reusable Docker workflow (Depends on Job 1)
-  build-docker:
-    name: Build & Push Docker Image
-    needs: build-test
-    uses: ./.github/workflows/reusable-docker.yml
-    with:
-      # Pass both tags as required by the task
-      tag_latest: 'latest'
-      tag_sha: 'sha-${{ github.sha }}' # Note: If your reusable workflow strictly requires a 7-character short SHA, see the note below.
-
-  # Job 3: Deploy job (Depends on Job 2)
-  deploy:
-    name: Deploy to Production
-    needs: build-docker
+  # 3. Add standalone pr-comment job running after build-test
+  pr-comment:
+    name: PR Summary Comment
     runs-on: ubuntu-latest
-    environment: production # Uses the environment configured in Settings -> Environments
-
+    needs: build-test # Ensures it runs after the build-test job
     steps:
-      - name: Deploying image
+      - name: Print PR summary
         run: |
-          # Replace <your-image-url> with your actual container registry URL if needed
-          echo "Deploying image: my-docker-reg.azurecr.io/app:sha-${{ github.sha }} to production"
+          echo "PR checks passed for branch: ${{ github.head_ref }}"
