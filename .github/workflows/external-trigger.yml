@@ -1,15 +1,13 @@
-name: external triggered
+name: External Trigger Workflow
 
 on:
   repository_dispatch:
     types: [deploy-request]
 
 jobs:
-  
-  print:
+  print_payload:
     runs-on: ubuntu-latest
-
     steps:
-     
-      - name: Print client payload
-        run: echo "${{ github.event.client_payload.environment }}"
+      - name: Print Environment from Client Payload
+        run: |
+          echo "Environment: ${{ github.event.client_payload.environment }}"
