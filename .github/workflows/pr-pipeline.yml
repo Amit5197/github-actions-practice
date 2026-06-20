@@ -1,5 +1,6 @@
 name: PR Pipeline
 
+# 1. Trigger: pull_request to main (types: opened, synchronize)
 on:
   pull_request:
     branches:
@@ -9,14 +10,19 @@ on:
       - synchronize
 
 jobs:
+  # 2. Call the reusable build-test workflow
   build-test:
     name: Build & Test
     uses: ./.github/workflows/reusable-build-test.yml
+    with:
+      node_version: '20'
+      run_tests: true
 
+  # 3. Add a standalone job pr-comment
   pr-comment:
     name: PR Summary Comment
     runs-on: ubuntu-latest
-    needs: build-test
+    needs: build-test # Runs after the build-test job
     steps:
       - name: Print PR summary
         run: |
