@@ -1,6 +1,5 @@
 name: PR Pipeline
 
-# 1. Trigger on pull request to main
 on:
   pull_request:
     branches:
@@ -10,19 +9,14 @@ on:
       - synchronize
 
 jobs:
-  # 2. Call the reusable build-test workflow
   build-test:
     name: Build & Test
     uses: ./.github/workflows/reusable-build-test.yml
-    with:
-      node_version: '20'
-      run_tests: true # This flag tells your reusable workflow NOT to run Docker steps
 
-  # 3. Add standalone pr-comment job running after build-test
   pr-comment:
     name: PR Summary Comment
     runs-on: ubuntu-latest
-    needs: build-test # Ensures it runs after the build-test job
+    needs: build-test
     steps:
       - name: Print PR summary
         run: |
