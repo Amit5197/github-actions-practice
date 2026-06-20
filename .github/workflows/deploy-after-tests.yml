@@ -1,4 +1,4 @@
-name: deploy after test
+name: Deploy After Tests
 
 on:
   workflow_run:
@@ -6,19 +6,20 @@ on:
     types: [completed]
 
 jobs:
-  
-  check:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
-
-      - name: check if success
+      - name: Stop if tests failed
+        if: ${{ github.event.workflow_run.conclusion != 'success' }}
         run: |
-          if [[ "${{ github.event.workflow_run.conclusion }}" == "success" ]]; then
-            echo "Tests workflow run - SUCCESSFULL"
-          else
-            echo "Warning: Test workflow run - FAILED"
-            echo "exitting"
-            exit 1
-          fi
-        
+          echo "Tests failed. Deployment cancelled."
+          exit 1
+
+      - name: Checkout Repository
+        if: ${{ github.event.workflow_run.conclusion == 'success' }}
+        uses: actions/checkout@v4
+
+      - name: Deploy Application
+        if: ${{ github.event.workflow_run.conclusion == 'success' }}
+        run: echo "Deploying application..."
