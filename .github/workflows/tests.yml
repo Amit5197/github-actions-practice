@@ -4,17 +4,20 @@ on:
   push:
 
 jobs:
- 
   test:
     runs-on: ubuntu-latest
 
     steps:
-      
-      - name: print test
-        run: |
-          echo "Runnign from test workflow"
-          echo "All tests done for :$(date)"
-          echo '"All tests done on :${{ runner.os }}"'
+      - name: Checkout Repository
+        uses: actions/checkout@v4
 
-      - name: FAIL
-        run: exit 0  #Changed from exit 1 to exit 0 
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Run Tests
+        run: npm test
