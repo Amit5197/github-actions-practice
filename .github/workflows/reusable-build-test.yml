@@ -32,15 +32,15 @@ jobs:
         uses: actions/setup-node@v5
         with:
           node-version: ${{ inputs.node_version }}
-          # CACHE IS REMOVED FROM HERE
+          # REMOVED CACHE LINE ENTIRELY FROM HERE
 
       - name: Install dependencies
-        run: npm install # CHANGED TO INSTALL
+        run: npm install
 
       - name: Run tests
         if: ${{ inputs.run_tests == true }}
         id: run-tests
-        run: npm test || echo "No tests configured" # FAILS-SAFE IF TESTING COMMAND RUNS BLANK
+        run: npm test || echo "No tests to run"
 
       - name: Set output
         id: set-result
