@@ -13,8 +13,8 @@ jobs:
     name: Build & Test
     uses: ./.github/workflows/reusable-build-test.yml
     with:
-      node_version: '20'
-      run-tests: true
+      node_version: "20"
+      run_tests: true
 
   pr-comment:
     name: PR Summary Comment
@@ -24,5 +24,3 @@ jobs:
       - name: Print PR summary
         run: |
           echo "PR checks passed for branch: ${{ github.head_ref }}"
-          echo "Test result: ${{ needs.build-test.outputs.test_result }}"
-          echo "Commit: ${{ github.sha }}"
